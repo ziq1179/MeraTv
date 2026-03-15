@@ -29,12 +29,12 @@ const categories = [
   { title: "News", url: "/category/news", icon: Newspaper },
   { title: "T20 Leagues", url: "/category/t20", icon: Zap },
   { title: "Test Cricket", url: "/category/test", icon: Trophy },
+  { title: "World Cup Finals", url: "/world-cup-finals", icon: Medal },
+  { title: "News & Updates", url: "/news", icon: Rss },
 ];
 
 const personalItems = [
   { title: "Live TV", url: "/live-tv", icon: Satellite },
-  { title: "World Cup Finals", url: "/world-cup-finals", icon: Medal },
-  { title: "News & Updates", url: "/news", icon: Rss },
   { title: "Favorites", url: "/favorites", icon: Heart },
 ];
 
