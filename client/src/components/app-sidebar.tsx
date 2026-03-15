@@ -45,9 +45,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 pb-0">
         <Link href="/" data-testid="link-home-logo">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
-              <Tv className="w-4 h-4 text-primary-foreground" />
-            </div>
+            <img src="/pwa-192.png" alt="CricStream" className="w-8 h-8 rounded-md" />
             <div>
               <h1 className="text-sm font-semibold tracking-tight">CricStream</h1>
               <p className="text-xs text-muted-foreground">Cricket Channels</p>
