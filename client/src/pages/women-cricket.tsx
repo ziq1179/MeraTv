@@ -3,10 +3,11 @@ import { Sparkles, Play, Calendar } from "lucide-react";
 import { VideoPlayer, type VideoItem } from "@/components/video-player";
 
 interface WomenMatch extends VideoItem {
-  filterCategory: "Final" | "Highlights" | "Classic" | "Rivalry";
+  filterCategory: "Final" | "Australia" | "WBBL" | "Classic" | "Rivalry";
 }
 
 const matches: WomenMatch[] = [
+  // Finals
   {
     id: "wt20-2023-final",
     title: "Women's T20 World Cup Final",
@@ -72,13 +73,133 @@ const matches: WomenMatch[] = [
     flag1: "🇦🇺",
     flag2: "🏆",
   },
+  // Australia matches
+  {
+    id: "aus-ind-t20-1st-2024",
+    title: "Australia W vs India W — 1st T20",
+    teams: "Australia Women vs India Women",
+    year: 2024,
+    category: "Australia",
+    filterCategory: "Australia",
+    tournament: "T20I Series 2024",
+    result: "1st T20 full match highlights",
+    videoId: "x8rc6ka",
+    flag1: "🇦🇺",
+    flag2: "🇮🇳",
+  },
+  {
+    id: "aus-ind-t20-3rd-2024",
+    title: "Australia W vs India W — 3rd T20",
+    teams: "Australia Women vs India Women",
+    year: 2024,
+    category: "Australia",
+    filterCategory: "Australia",
+    tournament: "T20I Series 2024",
+    result: "3rd T20 full match highlights",
+    videoId: "x8rda49",
+    flag1: "🇦🇺",
+    flag2: "🇮🇳",
+  },
+  {
+    id: "aus-sa-t20-final",
+    title: "Australia W vs South Africa W",
+    teams: "Australia Women vs South Africa Women",
+    year: 2023,
+    category: "Australia",
+    filterCategory: "Australia",
+    tournament: "ICC Women's T20 World Cup Final",
+    result: "Australia won by 19 runs — Beth Mooney stars",
+    videoId: "x8in7nz",
+    flag1: "🇦🇺",
+    flag2: "🇿🇦",
+  },
+  {
+    id: "aus-nz-t20-1st",
+    title: "Australia W vs New Zealand W — 1st T20",
+    teams: "Australia Women vs New Zealand Women",
+    year: 2023,
+    category: "Australia",
+    filterCategory: "Australia",
+    tournament: "T20I Series",
+    result: "Full match highlights",
+    videoId: "x6ugooc",
+    flag1: "🇦🇺",
+    flag2: "🇳🇿",
+  },
+  {
+    id: "aus-ind-odi-classic",
+    title: "Australia W vs India W — ODI",
+    teams: "Australia Women vs India Women",
+    year: 2022,
+    category: "Australia",
+    filterCategory: "Australia",
+    tournament: "Women's ODI Series",
+    result: "Classic match highlights",
+    videoId: "x2vrp4d",
+    flag1: "🇦🇺",
+    flag2: "🇮🇳",
+  },
+  {
+    id: "aus-ind-odi-1st",
+    title: "Australia W vs India W — 1st ODI",
+    teams: "Australia Women vs India Women",
+    year: 2021,
+    category: "Australia",
+    filterCategory: "Australia",
+    tournament: "Women's ODI Series",
+    result: "1st ODI highlights",
+    videoId: "xpe400",
+    flag1: "🇦🇺",
+    flag2: "🇮🇳",
+  },
+  {
+    id: "aus-eng-odi",
+    title: "Australia W vs England W — Ashes ODI",
+    teams: "Australia Women vs England Women",
+    year: 2023,
+    category: "Australia",
+    filterCategory: "Australia",
+    tournament: "Women's Ashes 2023",
+    result: "Ashes ODI series highlights",
+    videoId: "x3rse4a",
+    flag1: "🇦🇺",
+    flag2: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  },
+  // WBBL
+  {
+    id: "wbbl-grace-harris",
+    title: "WBBL — Grace Harris Six with Broken Bat",
+    teams: "Brisbane Heat vs Perth Scorchers",
+    year: 2023,
+    category: "WBBL",
+    filterCategory: "WBBL",
+    tournament: "Women's Big Bash League (WBBL)",
+    result: "Brisbane Heat win — viral moment",
+    videoId: "x8p0z2p",
+    flag1: "🏏",
+    flag2: "🔥",
+  },
+  {
+    id: "wbbl-harmanpreet",
+    title: "WBBL — Harmanpreet Kaur in Renegades",
+    teams: "Melbourne Renegades",
+    year: 2023,
+    category: "WBBL",
+    filterCategory: "WBBL",
+    tournament: "Women's Big Bash League (WBBL)",
+    result: "Harmanpreet Kaur seals Renegades win",
+    videoId: "x85nl0d",
+    flag1: "🏏",
+    flag2: "🇮🇳",
+  },
+  // Classic & Rivalry
   {
     id: "wodi-2017-sf",
     title: "Women's ODI World Cup Semi-Final",
     teams: "India vs Australia",
     year: 2017,
-    category: "Highlights",
-    filterCategory: "Highlights",
+    category: "Classic",
+    filterCategory: "Classic",
     tournament: "ICC Women's Cricket World Cup 2017",
     result: "India won — entered final",
     videoId: "x5u9t0o",
@@ -99,19 +220,6 @@ const matches: WomenMatch[] = [
     flag2: "🇦🇺",
   },
   {
-    id: "ind-pak-women",
-    title: "India vs Pakistan Women",
-    teams: "India Women vs Pakistan Women",
-    year: 2023,
-    category: "Rivalry",
-    filterCategory: "Rivalry",
-    tournament: "ICC Women's Cricket",
-    result: "Classic rivalry highlights",
-    videoId: "x5sno0g",
-    flag1: "🇮🇳",
-    flag2: "🇵🇰",
-  },
-  {
     id: "ind-women-test",
     title: "India Women Test Match",
     teams: "India Women vs Australia Women",
@@ -129,24 +237,38 @@ const matches: WomenMatch[] = [
     title: "Women's Cricket Best Moments",
     teams: "International Women's Cricket",
     year: 2024,
-    category: "Highlights",
-    filterCategory: "Highlights",
+    category: "Classic",
+    filterCategory: "Classic",
     tournament: "ICC Women's Cricket 2024",
     result: "Best moments compilation",
     videoId: "x9guokc",
     flag1: "🏏",
     flag2: "⭐",
   },
+  {
+    id: "ind-pak-women",
+    title: "India vs Pakistan Women",
+    teams: "India Women vs Pakistan Women",
+    year: 2023,
+    category: "Rivalry",
+    filterCategory: "Rivalry",
+    tournament: "ICC Women's Cricket",
+    result: "Classic rivalry highlights",
+    videoId: "x5sno0g",
+    flag1: "🇮🇳",
+    flag2: "🇵🇰",
+  },
 ];
 
 const categoryColors: Record<string, string> = {
-  Final: "bg-yellow-500/15 text-yellow-500 border-yellow-500/30",
-  Highlights: "bg-green-500/15 text-green-400 border-green-500/30",
-  Classic: "bg-blue-500/15 text-blue-400 border-blue-500/30",
-  Rivalry: "bg-red-500/15 text-red-400 border-red-500/30",
+  Final:     "bg-yellow-500/15 text-yellow-500 border-yellow-500/30",
+  Australia: "bg-green-500/15 text-green-500 border-green-500/30",
+  WBBL:      "bg-orange-500/15 text-orange-400 border-orange-500/30",
+  Classic:   "bg-blue-500/15 text-blue-400 border-blue-500/30",
+  Rivalry:   "bg-red-500/15 text-red-400 border-red-500/30",
 };
 
-const filters = ["All", "Final", "Highlights", "Classic", "Rivalry"] as const;
+const filters = ["All", "Final", "Australia", "WBBL", "Classic", "Rivalry"] as const;
 type Filter = typeof filters[number];
 
 export default function WomenCricket() {
@@ -175,7 +297,7 @@ export default function WomenCricket() {
           <h1 className="text-lg font-bold" data-testid="text-women-title">Women's Cricket</h1>
         </div>
         <p className="text-sm text-muted-foreground mt-0.5">
-          World Cup finals, classic matches & rivalry highlights
+          World Cup finals, Australian matches, WBBL & rivalry highlights
         </p>
         <div className="flex items-center gap-2 mt-3 flex-wrap">
           {filters.map((f) => (
@@ -224,7 +346,7 @@ export default function WomenCricket() {
                 {match.teams}
               </p>
               <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{match.tournament}</p>
-              <p className="text-xs text-muted-foreground mt-1 italic">{match.result}</p>
+              <p className="text-xs text-muted-foreground mt-1 italic line-clamp-1">{match.result}</p>
 
               <div className="flex items-center gap-1.5 mt-3 text-xs text-pink-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                 <Play className="w-3.5 h-3.5" />
