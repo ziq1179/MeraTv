@@ -1,0 +1,110 @@
+import { useLocation, Link } from "wouter";
+import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite } from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+  SidebarFooter,
+} from "@/components/ui/sidebar";
+import { Badge } from "@/components/ui/badge";
+
+const categories = [
+  { title: "All Channels", url: "/", icon: Tv },
+  { title: "Live Now", url: "/category/live", icon: Radio },
+  { title: "Highlights", url: "/category/highlights", icon: TrendingUp },
+  { title: "News", url: "/category/news", icon: Newspaper },
+  { title: "T20 Leagues", url: "/category/t20", icon: Zap },
+  { title: "Test Cricket", url: "/category/test", icon: Trophy },
+];
+
+const personalItems = [
+  { title: "Live TV", url: "/live-tv", icon: Satellite },
+  { title: "Favorites", url: "/favorites", icon: Heart },
+];
+
+export function AppSidebar() {
+  const [location] = useLocation();
+
+  return (
+    <Sidebar>
+      <SidebarHeader className="p-4">
+        <Link href="/" data-testid="link-home-logo">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
+              <Tv className="w-4 h-4 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-sm font-semibold tracking-tight">CricStream</h1>
+              <p className="text-xs text-muted-foreground">Cricket Channels</p>
+            </div>
+          </div>
+        </Link>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Browse</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {categories.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location === item.url}
+                    data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
+                  >
+                    <Link href={item.url}>
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.title}</span>
+                      {item.title === "Live Now" && (
+                        <Badge variant="destructive" className="ml-auto text-[10px] px-1.5 py-0">
+                          LIVE
+                        </Badge>
+                      )}
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Personal</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {personalItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location === item.url}
+                    data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
+                  >
+                    <Link href={item.url}>
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.title}</span>
+                      {item.title === "Live TV" && (
+                        <Badge variant="destructive" className="ml-auto text-[10px] px-1.5 py-0">
+                          LIVE
+                        </Badge>
+                      )}
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter className="p-4">
+        <p className="text-xs text-muted-foreground text-center">
+          CricStream v1.0
+        </p>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
