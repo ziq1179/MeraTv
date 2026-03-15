@@ -11,6 +11,7 @@ const streams = [
   { id: "stream5", label: "Stream 5", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-7.htm" },
   { id: "stream6", label: "Stream 6", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-8.htm" },
   { id: "streamhd", label: "HD Stream", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-9.htm" },
+  { id: "ptvsports", label: "PTV Sports", url: "https://www.ptvsportstv.com/ptv-sports-live-tv-hd/" },
 ];
 
 export default function LiveTV() {
