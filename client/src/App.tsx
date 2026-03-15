@@ -7,6 +7,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { InstallPrompt } from "@/components/install-prompt";
 import Home from "@/pages/home";
 import Favorites from "@/pages/favorites";
 import LiveTV from "@/pages/live-tv";
@@ -51,6 +52,7 @@ function App() {
             </div>
           </SidebarProvider>
           <Toaster />
+          <InstallPrompt />
         </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>
