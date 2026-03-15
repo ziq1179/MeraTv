@@ -4,7 +4,15 @@ import { storage } from "./storage";
 import { insertFavoriteSchema } from "@shared/schema";
 import Parser from "rss-parser";
 
-const rssParser = new Parser();
+const rssParser = new Parser({
+  customFields: {
+    item: [
+      ["media:thumbnail", "mediaThumbnail"],
+      ["media:content", "mediaContent"],
+      ["coverImages", "coverImages"],
+    ],
+  },
+});
 let newsCache: { items: any[]; fetchedAt: number } | null = null;
 const NEWS_TTL = 10 * 60 * 1000; // 10 minutes
 
@@ -98,7 +106,20 @@ export async function registerRoutes(
               pubDate: item.pubDate || item.isoDate || "",
               summary: item.contentSnippet || item.content || "",
               source: result.value.title || "Cricket News",
-              thumbnail: item.enclosure?.url || item["media:thumbnail"]?.["$"]?.url || null,
+              thumbnail: (() => {
+                const raw =
+                  item.mediaThumbnail?.["$"]?.url ||
+                  item.mediaThumbnail?.["$"]?.URL ||
+                  (typeof item.mediaThumbnail === "string" ? item.mediaThumbnail : null) ||
+                  item.mediaContent?.["$"]?.url ||
+                  (typeof item.coverImages === "string" ? item.coverImages : null) ||
+                  item.enclosure?.url ||
+                  null;
+                if (raw && raw.includes("ichef.bbci.co.uk")) {
+                  return raw.replace(/\/standard\/\d+\//, "/standard/624/");
+                }
+                return raw;
+              })(),
             });
           }
         }

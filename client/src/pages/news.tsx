@@ -25,12 +25,12 @@ function timeAgo(dateStr: string) {
 
 function NewsCardSkeleton() {
   return (
-    <div className="flex gap-3 p-4 border rounded-lg">
-      <Skeleton className="w-24 h-16 rounded flex-shrink-0" />
-      <div className="flex-1 space-y-2">
+    <div className="flex border rounded-lg overflow-hidden">
+      <Skeleton className="w-36 sm:w-48 flex-shrink-0" style={{ minHeight: "100px" }} />
+      <div className="flex-1 p-3 space-y-2">
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-3 w-1/3" />
+        <Skeleton className="h-3 w-1/3 mt-2" />
       </div>
     </div>
   );
@@ -97,18 +97,24 @@ export default function News() {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors group"
+                className="flex gap-0 border rounded-lg hover:bg-muted/50 transition-colors group overflow-hidden"
                 data-testid={`card-news-${i}`}
               >
                 {item.thumbnail && (
-                  <img
-                    src={item.thumbnail}
-                    alt=""
-                    className="w-24 h-16 object-cover rounded flex-shrink-0 bg-muted"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                  />
+                  <div className="w-36 sm:w-48 flex-shrink-0">
+                    <img
+                      src={item.thumbnail}
+                      alt={item.title}
+                      className="w-full h-full object-cover bg-muted"
+                      style={{ minHeight: "100px", maxHeight: "130px" }}
+                      onError={(e) => {
+                        const el = e.target as HTMLImageElement;
+                        el.parentElement!.style.display = "none";
+                      }}
+                    />
+                  </div>
                 )}
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 p-3">
                   <div className="flex items-start justify-between gap-2">
                     <h3
                       className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors"
