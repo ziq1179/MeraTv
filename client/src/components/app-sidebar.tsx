@@ -33,7 +33,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="p-4">
+      <SidebarHeader className="p-4 pb-0">
         <Link href="/" data-testid="link-home-logo">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
@@ -45,6 +45,14 @@ export function AppSidebar() {
             </div>
           </div>
         </Link>
+        <div className="mt-3 rounded-md overflow-hidden">
+          <img
+            src="/images/header-logo.jpg"
+            alt="Cricket Masterclass"
+            className="w-full object-cover"
+            data-testid="img-header-banner"
+          />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
