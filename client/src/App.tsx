@@ -12,6 +12,7 @@ import Home from "@/pages/home";
 import Favorites from "@/pages/favorites";
 import LiveTV from "@/pages/live-tv";
 import NewsPage from "@/pages/news";
+import WorldCupFinals from "@/pages/world-cup-finals";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/favorites" component={Favorites} />
       <Route path="/live-tv" component={LiveTV} />
       <Route path="/news" component={NewsPage} />
+      <Route path="/world-cup-finals" component={WorldCupFinals} />
       <Route component={NotFound} />
     </Switch>
   );
