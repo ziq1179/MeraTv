@@ -10,6 +10,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import Home from "@/pages/home";
 import Favorites from "@/pages/favorites";
 import LiveTV from "@/pages/live-tv";
+import NewsPage from "@/pages/news";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/category/:category" component={Home} />
       <Route path="/favorites" component={Favorites} />
       <Route path="/live-tv" component={LiveTV} />
+      <Route path="/news" component={NewsPage} />
       <Route component={NotFound} />
     </Switch>
   );

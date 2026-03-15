@@ -1,5 +1,5 @@
 import { useLocation, Link } from "wouter";
-import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite } from "lucide-react";
+import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite, Rss } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -25,6 +25,7 @@ const categories = [
 
 const personalItems = [
   { title: "Live TV", url: "/live-tv", icon: Satellite },
+  { title: "News & Updates", url: "/news", icon: Rss },
   { title: "Favorites", url: "/favorites", icon: Heart },
 ];
 
