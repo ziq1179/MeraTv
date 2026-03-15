@@ -1,5 +1,5 @@
 import { useLocation, Link } from "wouter";
-import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite, Rss, Globe, Medal } from "lucide-react";
+import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite, Rss, Globe, Medal, Sparkles } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -30,6 +30,7 @@ const categories = [
   { title: "T20 Leagues", url: "/category/t20", icon: Zap },
   { title: "Test Cricket", url: "/category/test", icon: Trophy },
   { title: "World Cup Finals", url: "/world-cup-finals", icon: Medal },
+  { title: "Women's Cricket", url: "/women-cricket", icon: Sparkles },
   { title: "News & Updates", url: "/news", icon: Rss },
 ];
 
