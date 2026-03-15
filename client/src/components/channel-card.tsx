@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Heart, Eye, Globe, Star } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,22 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
+const categoryGradients: Record<string, string> = {
+  "Highlights": "from-amber-900 via-orange-800 to-yellow-900",
+  "News": "from-blue-900 via-slate-800 to-blue-900",
+  "T20 League": "from-purple-900 via-violet-800 to-indigo-900",
+  "Test Cricket": "from-green-900 via-emerald-800 to-teal-900",
+  "Live": "from-red-900 via-rose-800 to-red-900",
+};
+
+const categoryEmoji: Record<string, string> = {
+  "Highlights": "🏏",
+  "News": "📺",
+  "T20 League": "⚡",
+  "Test Cricket": "🏟️",
+  "Live": "🔴",
+};
+
 interface ChannelCardProps {
   channel: Channel;
   onSelect: (channel: Channel) => void;
@@ -14,6 +31,9 @@ interface ChannelCardProps {
 
 export function ChannelCard({ channel, onSelect }: ChannelCardProps) {
   const { toast } = useToast();
+  const [imgError, setImgError] = useState(false);
+  const gradient = categoryGradients[channel.category] || "from-green-900 via-emerald-800 to-teal-900";
+  const emoji = categoryEmoji[channel.category] || "🏏";
 
   const { data: favorites = [] } = useQuery<{ id: string; channelId: string }[]>({
     queryKey: ["/api/favorites"],
@@ -49,13 +69,24 @@ export function ChannelCard({ channel, onSelect }: ChannelCardProps) {
       data-testid={`card-channel-${channel.id}`}
     >
       <div className="relative overflow-hidden rounded-t-md" onClick={() => onSelect(channel)}>
-        <img
-          src={channel.thumbnailUrl}
-          alt={channel.name}
-          className="w-full aspect-video object-cover"
-          loading="lazy"
-          data-testid={`img-channel-${channel.id}`}
-        />
+        {!imgError ? (
+          <img
+            src={channel.thumbnailUrl}
+            alt={channel.name}
+            className="w-full aspect-video object-cover"
+            loading="lazy"
+            data-testid={`img-channel-${channel.id}`}
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div
+            className={`w-full aspect-video bg-gradient-to-br ${gradient} flex flex-col items-center justify-center gap-2`}
+            data-testid={`img-channel-${channel.id}`}
+          >
+            <span className="text-4xl">{emoji}</span>
+            <span className="text-white/60 text-xs font-medium uppercase tracking-wider">{channel.category}</span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         {channel.isLive && (
           <Badge
