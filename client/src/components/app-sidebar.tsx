@@ -1,5 +1,5 @@
 import { useLocation, Link } from "wouter";
-import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite, Rss } from "lucide-react";
+import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite, Rss, ExternalLink, Globe } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -9,10 +9,18 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarHeader,
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
+
+const liveStreams = [
+  { title: "Webcric", url: "https://me.webcric.com/watch-t20-world-cup-2026-live-cricket-streaming-3.htm" },
+  { title: "PTV Sports", url: "https://www.ptvsportstv.com/ptv-sports-live-tv-hd/" },
+];
 
 const categories = [
   { title: "All Channels", url: "/", icon: Tv },
@@ -86,7 +94,38 @@ export function AppSidebar() {
           <SidebarGroupLabel>Personal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {personalItems.map((item) => (
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location === "/live-tv"}
+                  data-testid="nav-live-tv"
+                >
+                  <Link href="/live-tv">
+                    <Satellite className="w-4 h-4" />
+                    <span>Live TV</span>
+                    <Badge variant="destructive" className="ml-auto text-[10px] px-1.5 py-0">
+                      LIVE
+                    </Badge>
+                  </Link>
+                </SidebarMenuButton>
+                <SidebarMenuSub>
+                  {liveStreams.map((stream) => (
+                    <SidebarMenuSubItem key={stream.title}>
+                      <SidebarMenuSubButton
+                        asChild
+                        data-testid={`nav-livestream-${stream.title.toLowerCase().replace(/\s+/g, "-")}`}
+                      >
+                        <a href={stream.url} target="_blank" rel="noopener noreferrer">
+                          <Globe className="w-3 h-3" />
+                          <span>{stream.title}</span>
+                          <ExternalLink className="w-3 h-3 ml-auto opacity-50" />
+                        </a>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </SidebarMenuItem>
+              {personalItems.filter(i => i.title !== "Live TV").map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
@@ -96,11 +135,6 @@ export function AppSidebar() {
                     <Link href={item.url}>
                       <item.icon className="w-4 h-4" />
                       <span>{item.title}</span>
-                      {item.title === "Live TV" && (
-                        <Badge variant="destructive" className="ml-auto text-[10px] px-1.5 py-0">
-                          LIVE
-                        </Badge>
-                      )}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
