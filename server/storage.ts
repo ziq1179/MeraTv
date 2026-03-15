@@ -1,13 +1,5 @@
-import { channels, favorites, type Channel, type InsertChannel, type Favorite, type InsertFavorite } from "@shared/schema";
-import { eq, and, ilike, or } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
-import pg from "pg";
-
-const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-export const db = drizzle(pool);
+import type { Channel, InsertChannel, Favorite, InsertFavorite } from "@shared/schema";
+import { randomUUID } from "crypto";
 
 export interface IStorage {
   getChannels(filters?: { category?: string; search?: string; language?: string }): Promise<Channel[]>;
@@ -19,15 +11,16 @@ export interface IStorage {
   getChannelCount(): Promise<number>;
 }
 
-export class DatabaseStorage implements IStorage {
-  async getChannels(filters?: { category?: string; search?: string; language?: string }): Promise<Channel[]> {
-    let query = db.select().from(channels);
+export class MemStorage implements IStorage {
+  private channels: Map<string, Channel> = new Map();
+  private favorites: Map<string, Favorite> = new Map();
 
-    const conditions: any[] = [];
+  async getChannels(filters?: { category?: string; search?: string; language?: string }): Promise<Channel[]> {
+    let results = Array.from(this.channels.values());
 
     if (filters?.category) {
       if (filters.category === "live") {
-        conditions.push(eq(channels.isLive, true));
+        results = results.filter(c => c.isLive);
       } else {
         const categoryMap: Record<string, string> = {
           highlights: "Highlights",
@@ -36,71 +29,60 @@ export class DatabaseStorage implements IStorage {
           test: "Test Cricket",
         };
         const mapped = categoryMap[filters.category];
-        if (mapped) {
-          conditions.push(eq(channels.category, mapped));
-        }
+        if (mapped) results = results.filter(c => c.category === mapped);
       }
     }
 
     if (filters?.search) {
-      conditions.push(
-        or(
-          ilike(channels.name, `%${filters.search}%`),
-          ilike(channels.description, `%${filters.search}%`)
-        )
+      const q = filters.search.toLowerCase();
+      results = results.filter(c =>
+        c.name.toLowerCase().includes(q) || c.description.toLowerCase().includes(q)
       );
     }
 
     if (filters?.language) {
-      conditions.push(eq(channels.language, filters.language));
+      results = results.filter(c => c.language === filters.language);
     }
 
-    if (conditions.length > 0) {
-      return db.select().from(channels).where(and(...conditions));
-    }
-
-    return db.select().from(channels);
+    return results;
   }
 
   async getChannel(id: string): Promise<Channel | undefined> {
-    const result = await db.select().from(channels).where(eq(channels.id, id));
-    return result[0];
+    return this.channels.get(id);
   }
 
   async createChannel(channel: InsertChannel): Promise<Channel> {
-    const result = await db.insert(channels).values(channel).returning();
-    return result[0];
+    const newChannel: Channel = { id: randomUUID(), ...channel } as Channel;
+    this.channels.set(newChannel.id, newChannel);
+    return newChannel;
   }
 
   async getFavorites(sessionId: string): Promise<Favorite[]> {
-    return db.select().from(favorites).where(eq(favorites.sessionId, sessionId));
+    return Array.from(this.favorites.values()).filter(f => f.sessionId === sessionId);
   }
 
   async addFavorite(favorite: InsertFavorite): Promise<Favorite> {
-    const existing = await db.select().from(favorites)
-      .where(and(
-        eq(favorites.channelId, favorite.channelId),
-        eq(favorites.sessionId, favorite.sessionId)
-      ));
-    if (existing.length > 0) return existing[0];
-
-    const result = await db.insert(favorites).values(favorite).returning();
-    return result[0];
+    const existing = Array.from(this.favorites.values()).find(
+      f => f.channelId === favorite.channelId && f.sessionId === favorite.sessionId
+    );
+    if (existing) return existing;
+    const newFav: Favorite = { id: randomUUID(), ...favorite };
+    this.favorites.set(newFav.id, newFav);
+    return newFav;
   }
 
   async removeFavorite(channelId: string, sessionId: string): Promise<void> {
-    await db.delete(favorites).where(
-      and(
-        eq(favorites.channelId, channelId),
-        eq(favorites.sessionId, sessionId)
-      )
-    );
+    for (const [key, fav] of this.favorites.entries()) {
+      if (fav.channelId === channelId && fav.sessionId === sessionId) {
+        this.favorites.delete(key);
+        break;
+      }
+    }
   }
 
   async getChannelCount(): Promise<number> {
-    const result = await db.select().from(channels);
-    return result.length;
+    return this.channels.size;
   }
 }
 
-export const storage = new DatabaseStorage();
+export const storage = new MemStorage();
