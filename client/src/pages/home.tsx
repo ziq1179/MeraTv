@@ -165,8 +165,12 @@ export default function Home() {
                 )}
               </div>
               <div className="hidden sm:block flex-shrink-0 ml-4">
-                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white/20 bg-white/10 flex items-center justify-center" data-testid="img-featured-player">
-                  <span className="text-6xl md:text-7xl select-none">🏏</span>
+                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white/20" data-testid="img-featured-player">
+                  <img
+                    src="/images/player-hero.jpg"
+                    alt="Featured Cricket Player"
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
               </div>
             </div>
