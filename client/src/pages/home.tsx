@@ -5,7 +5,6 @@ import { Search, Tv, Radio, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import playerPhoto from "@assets/1729331782936_1771133635899.jpg";
 import { ChannelCard } from "@/components/channel-card";
 import { ChannelPlayer } from "@/components/channel-player";
 import { ChannelGridSkeleton, EmptyState } from "@/components/channel-grid";
@@ -166,13 +165,8 @@ export default function Home() {
                 )}
               </div>
               <div className="hidden sm:block flex-shrink-0 ml-4">
-                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white/20">
-                  <img
-                    src={playerPhoto}
-                    alt="Featured Cricket Player"
-                    className="w-full h-full object-cover object-top"
-                    data-testid="img-featured-player"
-                  />
+                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white/20 bg-white/10 flex items-center justify-center" data-testid="img-featured-player">
+                  <span className="text-6xl md:text-7xl select-none">🏏</span>
                 </div>
               </div>
             </div>
