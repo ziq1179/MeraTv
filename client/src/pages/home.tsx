@@ -123,7 +123,7 @@ export default function Home() {
         {!category && !searchQuery && !isLoading && (
           <div className="relative overflow-hidden rounded-md" data-testid="banner-hero">
             <img
-              src="/images/hero-cricket.png"
+              src="/images/hero-cricket.jpg"
               alt="Cricket"
               className="w-full h-48 md:h-60 object-cover"
             />
