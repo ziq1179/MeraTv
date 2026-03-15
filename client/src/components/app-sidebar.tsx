@@ -1,5 +1,5 @@
 import { useLocation, Link } from "wouter";
-import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite, Rss, ExternalLink, Globe } from "lucide-react";
+import { Tv, Heart, Radio, TrendingUp, Newspaper, Trophy, Zap, Satellite, Rss, Globe } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,8 +18,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 const liveStreams = [
-  { title: "Webcric", url: "https://me.webcric.com/watch-t20-world-cup-2026-live-cricket-streaming-3.htm" },
-  { title: "PTV Sports", url: "https://www.ptvsportstv.com/ptv-sports-live-tv-hd/" },
+  { title: "Webcric", url: "/live-tv?stream=webcric" },
+  { title: "PTV Sports", url: "/live-tv?stream=ptvsports" },
 ];
 
 const categories = [
@@ -113,13 +113,13 @@ export function AppSidebar() {
                     <SidebarMenuSubItem key={stream.title}>
                       <SidebarMenuSubButton
                         asChild
+                        isActive={location.startsWith("/live-tv") && location.includes(stream.url.split("=")[1])}
                         data-testid={`nav-livestream-${stream.title.toLowerCase().replace(/\s+/g, "-")}`}
                       >
-                        <a href={stream.url} target="_blank" rel="noopener noreferrer">
+                        <Link href={stream.url}>
                           <Globe className="w-3 h-3" />
                           <span>{stream.title}</span>
-                          <ExternalLink className="w-3 h-3 ml-auto opacity-50" />
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

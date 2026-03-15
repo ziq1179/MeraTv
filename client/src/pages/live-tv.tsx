@@ -1,21 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearch } from "wouter";
 import { Satellite, ExternalLink, Maximize2, Minimize2, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 const streams = [
-  { id: "stream1", label: "Stream 1", url: "https://me.webcric.com/watch-t20-world-cup-2026-live-cricket-streaming-3.htm" },
-  { id: "stream2", label: "Stream 2", url: "https://me.webcric.com/t20-world-cup-2026-live-cricket-streaming-3.htm" },
-  { id: "stream3", label: "Stream 3", url: "https://me.webcric.com/watch-icc-t20-world-cup-2026-live-cricket-streaming-3.htm" },
-  { id: "stream4", label: "Stream 4", url: "https://me.webcric.com/icc-t20-world-cup-2026-live-cricket-streaming-3.htm" },
-  { id: "stream5", label: "Stream 5", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-7.htm" },
-  { id: "stream6", label: "Stream 6", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-8.htm" },
-  { id: "streamhd", label: "HD Stream", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-9.htm" },
-  { id: "ptvsports", label: "PTV Sports", url: "https://www.ptvsportstv.com/ptv-sports-live-tv-hd/" },
+  { id: "stream1", label: "Stream 1", url: "https://me.webcric.com/watch-t20-world-cup-2026-live-cricket-streaming-3.htm", group: "webcric" },
+  { id: "stream2", label: "Stream 2", url: "https://me.webcric.com/t20-world-cup-2026-live-cricket-streaming-3.htm", group: "webcric" },
+  { id: "stream3", label: "Stream 3", url: "https://me.webcric.com/watch-icc-t20-world-cup-2026-live-cricket-streaming-3.htm", group: "webcric" },
+  { id: "stream4", label: "Stream 4", url: "https://me.webcric.com/icc-t20-world-cup-2026-live-cricket-streaming-3.htm", group: "webcric" },
+  { id: "stream5", label: "Stream 5", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-7.htm", group: "webcric" },
+  { id: "stream6", label: "Stream 6", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-8.htm", group: "webcric" },
+  { id: "streamhd", label: "HD Stream", url: "https://me.webcric.com/watch-icc-t20-world-cup-live-cricket-streaming-9.htm", group: "webcric" },
+  { id: "ptvsports", label: "PTV Sports", url: "https://www.ptvsportstv.com/ptv-sports-live-tv-hd/", group: "ptvsports" },
 ];
 
 export default function LiveTV() {
-  const [activeStream, setActiveStream] = useState(streams[0]);
+  const search = useSearch();
+  const params = new URLSearchParams(search);
+  const streamParam = params.get("stream");
+
+  const initialStream = streamParam
+    ? (streams.find((s) => s.id === streamParam || s.group === streamParam) ?? streams[0])
+    : streams[0];
+
+  const [activeStream, setActiveStream] = useState(initialStream);
+
+  useEffect(() => {
+    if (streamParam) {
+      const match = streams.find((s) => s.id === streamParam || s.group === streamParam);
+      if (match) setActiveStream(match);
+    }
+  }, [streamParam]);
+
   const [isFullWidth, setIsFullWidth] = useState(false);
 
   return (
