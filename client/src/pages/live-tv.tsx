@@ -74,7 +74,7 @@ export default function LiveTV() {
       <div className="flex items-center gap-2 px-4 py-1.5 border-t bg-muted/50 text-xs text-muted-foreground">
         <Info className="w-3 h-3 flex-shrink-0" />
         <span data-testid="text-stream-info">Watching: {activeStream.label}</span>
-        <span className="hidden sm:inline">— If a stream is not loading, try a different option above.</span>
+        <span className="hidden sm:inline">— If a stream is not loading, try a different option above. If the site blocks embedding, use the ↗ button to open it in a new tab.</span>
       </div>
     </div>
   );
