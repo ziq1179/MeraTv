@@ -1,29 +1,20 @@
 import { useState } from "react";
-import { Star, Play, Calendar, Users, X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Sparkles, Play, Calendar } from "lucide-react";
+import { VideoPlayer, type VideoItem } from "@/components/video-player";
 
-interface Match {
-  id: string;
-  title: string;
-  teams: string;
-  year: number;
-  category: "Final" | "Highlights" | "Classic" | "Rivalry";
-  tournament: string;
-  result: string;
-  videoId: string;
-  flag1: string;
-  flag2: string;
+interface WomenMatch extends VideoItem {
+  filterCategory: "Final" | "Highlights" | "Classic" | "Rivalry";
 }
 
-const matches: Match[] = [
+const matches: WomenMatch[] = [
   {
     id: "wt20-2023-final",
     title: "Women's T20 World Cup Final",
     teams: "South Africa vs Australia",
     year: 2023,
     category: "Final",
-    tournament: "ICC Women's T20 World Cup",
+    filterCategory: "Final",
+    tournament: "ICC Women's T20 World Cup 2023",
     result: "Australia won by 19 runs",
     videoId: "x8imov5",
     flag1: "🇿🇦",
@@ -35,7 +26,8 @@ const matches: Match[] = [
     teams: "Australia vs India",
     year: 2020,
     category: "Final",
-    tournament: "ICC Women's T20 World Cup",
+    filterCategory: "Final",
+    tournament: "ICC Women's T20 World Cup 2020",
     result: "Australia won by 85 runs",
     videoId: "x7zgx1d",
     flag1: "🇦🇺",
@@ -47,7 +39,8 @@ const matches: Match[] = [
     teams: "Australia vs West Indies",
     year: 2016,
     category: "Final",
-    tournament: "ICC Women's T20 World Cup",
+    filterCategory: "Final",
+    tournament: "ICC Women's T20 World Cup 2016",
     result: "West Indies won by 8 wickets",
     videoId: "x41p8af",
     flag1: "🇦🇺",
@@ -59,7 +52,8 @@ const matches: Match[] = [
     teams: "England vs Australia",
     year: 2010,
     category: "Final",
-    tournament: "ICC Women's T20 World Cup",
+    filterCategory: "Final",
+    tournament: "ICC Women's T20 World Cup 2010",
     result: "England won by 7 wickets",
     videoId: "x6fo72q",
     flag1: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
@@ -71,7 +65,8 @@ const matches: Match[] = [
     teams: "Australia — Champions",
     year: 2013,
     category: "Final",
-    tournament: "ICC Women's Cricket World Cup",
+    filterCategory: "Final",
+    tournament: "ICC Women's Cricket World Cup 2013",
     result: "Australia won the tournament",
     videoId: "x2hhidq",
     flag1: "🇦🇺",
@@ -83,7 +78,8 @@ const matches: Match[] = [
     teams: "India vs Australia",
     year: 2017,
     category: "Highlights",
-    tournament: "ICC Women's Cricket World Cup",
+    filterCategory: "Highlights",
+    tournament: "ICC Women's Cricket World Cup 2017",
     result: "India won — entered final",
     videoId: "x5u9t0o",
     flag1: "🇮🇳",
@@ -95,7 +91,8 @@ const matches: Match[] = [
     teams: "England vs Australia",
     year: 2023,
     category: "Classic",
-    tournament: "Women's Ashes Series",
+    filterCategory: "Classic",
+    tournament: "Women's Ashes Series 2023",
     result: "3rd ODI highlights",
     videoId: "x8mmfl5",
     flag1: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
@@ -107,6 +104,7 @@ const matches: Match[] = [
     teams: "India Women vs Pakistan Women",
     year: 2023,
     category: "Rivalry",
+    filterCategory: "Rivalry",
     tournament: "ICC Women's Cricket",
     result: "Classic rivalry highlights",
     videoId: "x5sno0g",
@@ -119,6 +117,7 @@ const matches: Match[] = [
     teams: "India Women vs Australia Women",
     year: 2023,
     category: "Classic",
+    filterCategory: "Classic",
     tournament: "Women's Test Cricket",
     result: "Day 2 Highlights",
     videoId: "x8qsyeb",
@@ -127,11 +126,12 @@ const matches: Match[] = [
   },
   {
     id: "women-highlights-2024",
-    title: "Women's Cricket Highlights",
+    title: "Women's Cricket Best Moments",
     teams: "International Women's Cricket",
     year: 2024,
     category: "Highlights",
-    tournament: "ICC Women's Cricket",
+    filterCategory: "Highlights",
+    tournament: "ICC Women's Cricket 2024",
     result: "Best moments compilation",
     videoId: "x9guokc",
     flag1: "🏏",
@@ -150,16 +150,28 @@ const filters = ["All", "Final", "Highlights", "Classic", "Rivalry"] as const;
 type Filter = typeof filters[number];
 
 export default function WomenCricket() {
-  const [selected, setSelected] = useState<Match | null>(null);
+  const [selected, setSelected] = useState<WomenMatch | null>(null);
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
 
-  const filtered = activeFilter === "All" ? matches : matches.filter(m => m.category === activeFilter);
+  if (selected) {
+    return (
+      <VideoPlayer
+        item={selected}
+        onBack={() => setSelected(null)}
+        related={matches.filter((m) => m.id !== selected.id)}
+        onSelectRelated={(item) => setSelected(item as WomenMatch)}
+        accentColor="text-pink-500"
+      />
+    );
+  }
+
+  const filtered = activeFilter === "All" ? matches : matches.filter((m) => m.filterCategory === activeFilter);
 
   return (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="p-4 md:p-6 border-b">
         <div className="flex items-center gap-2">
-          <Star className="w-5 h-5 text-pink-500" />
+          <Sparkles className="w-5 h-5 text-pink-500" />
           <h1 className="text-lg font-bold" data-testid="text-women-title">Women's Cricket</h1>
         </div>
         <p className="text-sm text-muted-foreground mt-0.5">
@@ -193,8 +205,8 @@ export default function WomenCricket() {
               data-testid={`card-women-${match.id}`}
             >
               <div className="flex items-start justify-between gap-2 mb-3">
-                <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${categoryColors[match.category]}`}>
-                  {match.category}
+                <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${categoryColors[match.filterCategory]}`}>
+                  {match.filterCategory}
                 </span>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <Calendar className="w-3 h-3" />
@@ -222,37 +234,6 @@ export default function WomenCricket() {
           ))}
         </div>
       </div>
-
-      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        <DialogContent className="max-w-3xl w-full p-0 overflow-hidden">
-          <DialogHeader className="px-4 pt-4 pb-2">
-            <DialogTitle className="flex items-center gap-2 text-base">
-              <Star className="w-4 h-4 text-pink-500 flex-shrink-0" />
-              <span>{selected?.title} {selected?.year}</span>
-              <Badge variant="secondary" className="ml-auto text-[10px]">
-                {selected?.category}
-              </Badge>
-            </DialogTitle>
-            <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-              <Users className="w-3 h-3" />
-              {selected?.teams} — {selected?.result}
-            </p>
-          </DialogHeader>
-          <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-            {selected && (
-              <iframe
-                key={selected.id}
-                src={`https://www.dailymotion.com/embed/video/${selected.videoId}?autoplay=1`}
-                className="absolute inset-0 w-full h-full border-0"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                data-testid="iframe-women-player"
-                title={`${selected.title} ${selected.year}`}
-              />
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

@@ -1,132 +1,124 @@
 import { useState } from "react";
-import { Trophy, X, Play, Calendar, Users } from "lucide-react";
+import { Trophy, Play, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { VideoPlayer, type VideoItem } from "@/components/video-player";
 
-interface Final {
-  id: string;
-  tournament: string;
-  year: number;
-  teams: string;
-  winner: string;
-  result: string;
-  videoId: string;
-  type: "T20" | "ODI" | "CT";
-  flag1: string;
-  flag2: string;
-}
-
-const finals: Final[] = [
+const finals: VideoItem[] = [
   {
     id: "ct2025",
-    tournament: "ICC Champions Trophy",
-    year: 2025,
+    title: "ICC Champions Trophy Final",
     teams: "India vs New Zealand",
-    winner: "India",
+    year: 2025,
+    category: "CT",
+    tournament: "ICC Champions Trophy 2025",
     result: "India won by 4 wickets",
     videoId: "x9fu2n2",
-    type: "CT",
     flag1: "🇮🇳",
     flag2: "🇳🇿",
   },
   {
     id: "t20-2024",
-    tournament: "ICC Men's T20 World Cup",
-    year: 2024,
+    title: "ICC Men's T20 World Cup Final",
     teams: "India vs South Africa",
-    winner: "India",
+    year: 2024,
+    category: "T20",
+    tournament: "ICC Men's T20 World Cup 2024",
     result: "India won by 7 runs",
     videoId: "x9x5xs6",
-    type: "T20",
     flag1: "🇮🇳",
     flag2: "🇿🇦",
   },
   {
     id: "odi-2023",
-    tournament: "ICC Men's Cricket World Cup",
-    year: 2023,
+    title: "ICC Men's Cricket World Cup Final",
     teams: "Australia vs India",
-    winner: "Australia",
+    year: 2023,
+    category: "ODI",
+    tournament: "ICC Men's Cricket World Cup 2023",
     result: "Australia won by 6 wickets",
     videoId: "x8pr9un",
-    type: "ODI",
     flag1: "🇦🇺",
     flag2: "🇮🇳",
   },
   {
     id: "t20-2022",
-    tournament: "ICC Men's T20 World Cup",
-    year: 2022,
+    title: "ICC Men's T20 World Cup Final",
     teams: "Pakistan vs England",
-    winner: "England",
+    year: 2022,
+    category: "T20",
+    tournament: "ICC Men's T20 World Cup 2022",
     result: "England won by 5 wickets",
     videoId: "x8fgjv8",
-    type: "T20",
     flag1: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     flag2: "🇵🇰",
   },
   {
     id: "t20-2021",
-    tournament: "ICC Men's T20 World Cup",
-    year: 2021,
+    title: "ICC Men's T20 World Cup Final",
     teams: "Australia vs New Zealand",
-    winner: "Australia",
+    year: 2021,
+    category: "T20",
+    tournament: "ICC Men's T20 World Cup 2021",
     result: "Australia won by 8 wickets",
     videoId: "x85ibgt",
-    type: "T20",
     flag1: "🇦🇺",
     flag2: "🇳🇿",
   },
   {
     id: "odi-2019",
-    tournament: "ICC Men's Cricket World Cup",
-    year: 2019,
+    title: "ICC Men's Cricket World Cup Final",
     teams: "England vs New Zealand",
-    winner: "England",
+    year: 2019,
+    category: "ODI",
+    tournament: "ICC Men's Cricket World Cup 2019",
     result: "England won (Super Over)",
     videoId: "x7cg5r4",
-    type: "ODI",
     flag1: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     flag2: "🇳🇿",
   },
   {
     id: "t20-2016",
-    tournament: "ICC Men's T20 World Cup",
-    year: 2016,
+    title: "ICC Men's T20 World Cup Final",
     teams: "West Indies vs England",
-    winner: "West Indies",
+    year: 2016,
+    category: "T20",
+    tournament: "ICC Men's T20 World Cup 2016",
     result: "West Indies won by 4 wickets",
     videoId: "x41whyu",
-    type: "T20",
     flag1: "🏏",
     flag2: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
   },
   {
     id: "odi-2015",
-    tournament: "ICC Men's Cricket World Cup",
-    year: 2015,
+    title: "ICC Men's Cricket World Cup Final",
     teams: "Australia vs New Zealand",
-    winner: "Australia",
+    year: 2015,
+    category: "ODI",
+    tournament: "ICC Men's Cricket World Cup 2015",
     result: "Australia won by 7 wickets",
     videoId: "x2l0gkc",
-    type: "ODI",
     flag1: "🇦🇺",
     flag2: "🇳🇿",
   },
   {
     id: "odi-2011",
-    tournament: "ICC Men's Cricket World Cup",
-    year: 2011,
+    title: "ICC Men's Cricket World Cup Final",
     teams: "India vs Sri Lanka",
-    winner: "India",
+    year: 2011,
+    category: "ODI",
+    tournament: "ICC Men's Cricket World Cup 2011",
     result: "India won by 6 wickets",
     videoId: "x9ejifo",
-    type: "ODI",
     flag1: "🇮🇳",
     flag2: "🇱🇰",
   },
 ];
+
+const typeLabels: Record<string, string> = {
+  T20: "T20 World Cup",
+  ODI: "ODI World Cup",
+  CT: "Champions Trophy",
+};
 
 const typeColors: Record<string, string> = {
   T20: "bg-blue-500/15 text-blue-400 border-blue-500/30",
@@ -135,7 +127,18 @@ const typeColors: Record<string, string> = {
 };
 
 export default function WorldCupFinals() {
-  const [selected, setSelected] = useState<Final | null>(null);
+  const [selected, setSelected] = useState<VideoItem | null>(null);
+
+  if (selected) {
+    return (
+      <VideoPlayer
+        item={selected}
+        onBack={() => setSelected(null)}
+        related={finals.filter((f) => f.id !== selected.id)}
+        onSelectRelated={setSelected}
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col h-full overflow-y-auto">
@@ -159,8 +162,8 @@ export default function WorldCupFinals() {
               data-testid={`card-final-${final.id}`}
             >
               <div className="flex items-start justify-between gap-2 mb-3">
-                <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${typeColors[final.type]}`}>
-                  {final.type === "CT" ? "Champions Trophy" : final.type === "T20" ? "T20 World Cup" : "ODI World Cup"}
+                <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${typeColors[final.category]}`}>
+                  {typeLabels[final.category]}
                 </span>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <Calendar className="w-3 h-3" />
@@ -187,37 +190,6 @@ export default function WorldCupFinals() {
           ))}
         </div>
       </div>
-
-      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        <DialogContent className="max-w-3xl w-full p-0 overflow-hidden">
-          <DialogHeader className="px-4 pt-4 pb-2">
-            <DialogTitle className="flex items-center gap-2 text-base">
-              <Trophy className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-              <span>{selected?.tournament} {selected?.year} Final</span>
-              <Badge variant="secondary" className="ml-auto text-[10px]">
-                {selected?.winner} 🏆
-              </Badge>
-            </DialogTitle>
-            <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-              <Users className="w-3 h-3" />
-              {selected?.teams} — {selected?.result}
-            </p>
-          </DialogHeader>
-          <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-            {selected && (
-              <iframe
-                key={selected.id}
-                src={`https://www.dailymotion.com/embed/video/${selected.videoId}?autoplay=1&mute=0`}
-                className="absolute inset-0 w-full h-full border-0"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                data-testid="iframe-final-player"
-                title={`${selected.tournament} ${selected.year} Final`}
-              />
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
