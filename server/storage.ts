@@ -1,4 +1,4 @@
-import type { Channel, InsertChannel, Favorite, InsertFavorite } from "@shared/schema";
+import type { Channel, InsertChannel, Favorite, InsertFavorite } from "../shared/schema.js";
 import { randomUUID } from "crypto";
 
 export interface IStorage {

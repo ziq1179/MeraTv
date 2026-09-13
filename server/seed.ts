@@ -1,5 +1,5 @@
-import { storage } from "./storage";
-import type { InsertChannel } from "@shared/schema";
+import { storage } from "./storage.js";
+import type { InsertChannel } from "../shared/schema.js";
 
 const seedChannels: InsertChannel[] = [
   {

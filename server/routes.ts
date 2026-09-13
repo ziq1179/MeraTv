@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
-import { insertFavoriteSchema } from "@shared/schema";
+import { storage } from "./storage.js";
+import { insertFavoriteSchema } from "../shared/schema.js";
 import Parser from "rss-parser";
 
 const rssParser = new Parser({
