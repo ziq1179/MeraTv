@@ -3,11 +3,17 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Works when bundled to CJS (esbuild shims import.meta.url) and when the
-// serverless function runs as ESM (Vercel "type": "module").
-const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+function getModuleDir(): string {
+  // CJS bundles (esbuild + `node dist/*.cjs`) have __dirname. Dev via tsx/ESM
+  // does not, so fall back to import.meta.url there.
+  if (typeof __dirname === "string") {
+    return __dirname;
+  }
+  return path.dirname(fileURLToPath(import.meta.url));
+}
 
 export function serveStatic(app: Express) {
+  const moduleDir = getModuleDir();
   const candidates = [
     path.resolve(moduleDir, "public"),
     path.resolve(moduleDir, "dist/public"),

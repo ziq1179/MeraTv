@@ -90,7 +90,7 @@ import { seedDatabase } from "./seed.js";
     return res.status(status).json({ message });
   });
 
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production" && !process.env.VERCEL) {
     serveStatic(app);
   }
 })();
